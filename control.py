@@ -8,24 +8,28 @@ class PIDController:
     def __init__(self, name: str) -> None:
         self.name = name
         self.pid_controller = PID()
-        self.pid_controller.Kp = self.get_yaml_file[0] 
-        self.pid_controller.Ki = self.get_yaml_file[1] 
-        self.pid_controller.Kd = self.get_yaml_file[2]
-        self.pid_controller.setpoint = self.get_yaml_file[3]
-        self.pid_controller.sample_time = self.get_yaml_file[4]
-          
+        self.pid_controller.Kp = 0 
+        self.pid_controller.Ki = 0 
+        self.pid_controller.Kd = 0
+        self.pid_controller.setpoint = 0
+        self.pid_controller.sample_time = 0
+              
     def __call__(self, input: float) -> float:
         """Return the output of the PID controller"""
         #print(f"KP: {self.pid_controller.Kp} KI: {self.pid_controller.Ki}, KD: {self.pid_controller.Kd}, Update: {self.pid_controller.sample_time}, Setpoint: {self.pid_controller.setpoint}")
         return self.pid_controller.__call__(input)
 
-    @property
-    def get_yaml_file(self) -> list[float, float, float, float] | None:
+    @property.setter
+    def yaml_file(self) -> list[float, float, float, float] | None:
         """Get the yaml file configuration for this PID controller"""
         try:
             with open(r"pid\pid_configs.yaml", "r") as f:
                 yaml_file = safe_load(f)
-            return [yaml_file[f"{self.name}"]["KP"], yaml_file[f"{self.name}"]["KI"], yaml_file[f"{self.name}"]["KD"], yaml_file[f"{self.name}"]["Setpoint"], yaml_file[f"{self.name}"]["Update_Rate"]]
+            self.pid_controller.Kp = yaml_file[f"{self.name}"]["KP"], 
+            self.pid_controller.Ki = yaml_file[f"{self.name}"]["KI"], 
+            self.pid_controller.Kd = yaml_file[f"{self.name}"]["KD"], 
+            self.pid_controller.setpoint = yaml_file[f"{self.name}"]["Setpoint"], 
+            self.pid_controller.sample_time = yaml_file[f"{self.name}"]["Update_Rate"]
         except KeyError:
             print("The wrong key was entered")
             return
