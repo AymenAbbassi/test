@@ -1,8 +1,8 @@
 
 
 PID1:
-  KP: 1
+  KP: 2
   KI: 0
-  KD: 0
-  Setpoint: 0
-  Update_Rate: 0.1
+  KD: 1
+  Setpoint: 0.5
+  Update_Rate: 0.0001
