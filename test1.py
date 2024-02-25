@@ -1,19 +1,18 @@
-# from inputs import get_key
- 
-# while 1:
-#     events = get_key()
-#     for event in events:
-#         print(event.ev_type, event.code, event.state)
+import json
+import random
+from time import sleep
 
+def json_writer() -> None:
+    for i in range(20):
+        with open("data1.json", "w") as f:
+            numbers: dict = {"altitude": random.randint(0, 2000), "motor speed": random.randint(0, 2000), "speed": random.randint(0, 2000)}
+            # data = json.load(f)
+            # data["altitude"] = random.randint(0, 2000)
+            json.dump(numbers, f)
+        sleep(1)
 
+def main() -> None:
+    json_writer()
 
-
-
-
-
-import usb.core
-
-devices = usb.core.find(bDeviceClass=0)
-for device in devices:
-    print(device)
-
+if __name__ == "__main__":
+    main()
