@@ -1,0 +1,16 @@
+#!/bin/bash
+
+DIR_NAME=$(dirname "$0")
+# DEST_DIR="/home/aymen/Desktop/test1/backup1"
+DEST_DIR=$(find ~/Desktop -type d -name backup1)
+SERVICE=runscript
+
+echo "Uploading"
+
+rsync -tuva $DIR_NAME/* $DEST_DIR
+
+sleep 1
+
+sudo systemctl daemon-reload 
+
+sudo systemctl restart $SERVICE.service 

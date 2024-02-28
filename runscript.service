@@ -1,0 +1,10 @@
+[Unit]
+Description=Run a script
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/bash /home/aymen/Desktop/test/controller
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

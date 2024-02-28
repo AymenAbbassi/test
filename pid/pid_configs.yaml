@@ -1,7 +1,7 @@
 
 
 PID1:
-  KP: 1
+  KP: 10
   KI: 0
   KD: 1
   Setpoint: 0.5

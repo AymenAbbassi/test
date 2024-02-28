@@ -16,27 +16,28 @@ class JSONParser:
 
         self.file_path = file_path
 
-        self.json_thread = Thread(target=self.monitor_json_data)
-        self.json_thread.start()
+        # self.json_thread = Thread(target=self.monitor_json_data)
+        # self.json_thread.start()
 
     @classmethod
     def __str__(cls) -> str:
         return cls.name
     
     def monitor_json_data(self) -> None:
-        with open(self.file_path, "r") as f:
-            while True:
-                self.file = json.load(f)
+            with open(self.file_path, "r") as f:
+                self.file = (json.load(f))
+            print(self.file)
 
     def request_json_stream(self) -> dict:
         return self.file
     
 def main() -> None:
     parser = JSONParser("data1.json")
-    test1.json_writer()
     while True:
-        #print(parser.request_json_stream())
-        sleep(0.1)
+        test1.json_writer()
+        print(parser.monitor_json_data())
+        sleep(0.005)
+
 
 if __name__ == "__main__":
     main()
