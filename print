@@ -1,0 +1,25 @@
+#!/bin/bash
+
+TARGET_FILE=$1
+
+if [ ! -f $TARGET_FILE ] 
+    
+then
+
+    echo "printfile: '$TARGET_FILE' The target file does not exist"
+    
+    exit
+
+fi 
+
+while [ true ];
+
+do 
+
+    cat $TARGET_FILE
+
+    sleep 0.05
+
+    echo
+    
+done

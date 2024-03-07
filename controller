@@ -1,3 +1,5 @@
 #!/bin/bash
 
-python3 /home/aymen/Desktop/test/test2.py
+ 
+python3 -u /home/aymen/Desktop/test/test2.py
+

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+HOME_DIR=$HOME
+LOG_DIR="/Documents/logs"
+LOG_PATH=$HOME_DIR/$LOG_DIR
+
+
+tail -f -n 50 $LOG_PATH
