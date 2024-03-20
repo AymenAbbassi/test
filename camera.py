@@ -14,14 +14,9 @@ class CameraConfig:
         [cv.CAP_PROP_SATURATION, saturation],
         [cv.CAP_PROP_EXPOSURE, exposure],
         ]
-        for i in range(len(self.user_configs)):
-            if self.user_configs[i][1] is not None:
-                self.configs.append(self.user_configs[i])
-        
-camera1_configs = CameraConfig(fps=20, brightness=50)
-for prod_id, value in camera1_configs.configs:
-    print(prod_id, value)
 
+        self.configs = [self.user_configs[i] for i in range(len(self.user_configs)) if self.user_configs[i][1] is not None]
+        
 class Camera:
 
     def __init__(self, configs: CameraConfig, name: str, index: int, attemp_threshold: int) -> None:
