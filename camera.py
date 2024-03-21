@@ -1,6 +1,5 @@
-from typing import Optional
 import cv2 as cv
-from multiprocessing import Process
+from threading import Thread
 import logger
 
 class CameraConfig:
@@ -8,6 +7,7 @@ class CameraConfig:
     def __init__(self, fps=None, height=None, width=None, brightness=None, contrast=None, saturation=None, exposure=None) -> None:
         self.configs = []
         self.user_configs = [
+        #This depends on the camera capabilites and the backend.
         [cv.CAP_PROP_FPS, fps],
         [cv.CAP_PROP_FRAME_HEIGHT, height],
         [cv.CAP_PROP_FRAME_WIDTH, width],
@@ -29,7 +29,7 @@ class Camera:
         self.attempts_threshold = attemp_threshold
         self.frame: cv.Mat | None = None
 
-        self.camera_process = Process(target=self.monitor_mats, daemon=True)
+        self.camera_process = Thread(target=self.monitor_mats, daemon=True)
         self.camera_process.start()
     
     def __str__(self) -> str:
@@ -57,8 +57,18 @@ class Camera:
     
     def close(self) -> None:
         self.capture.release()
-        self.camera_process.terminate()
-        self.camera_process.close()
 
     def isOpened(self) -> bool:
         return self.capture.isOpened()
+    
+if __name__ == "__main__":
+    camera1_configs = CameraConfig(contrast=20, width=600, height=800)
+    camera1 = Camera(camera1_configs, "camera1", 0, 100)
+    while True:
+        if (frame := camera1.get_frame()) is not None:
+            cv.imshow("video1", frame)
+            if cv.waitKey(1) & 0xFF == ord("q"):
+                break
+
+    cv.destroyAllWindows()
+    camera1.close()
