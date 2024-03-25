@@ -72,9 +72,9 @@ class Subscriber:
         self.client.on_message = self.on_message
         self.client._reconnect_on_failure  = True
         self.client.on_subscribe = self.on_subscribe
-        
+
         self.client.connect(broker, keepalive=60)
-        self.client.subscribe("mqtt/hi")
+        self.client.subscribe(self.topic)
 
     def on_connect(self, client, userdata, flags, rc, properties=None) -> None:
         logger.log(f"Subscriber {self.name} has connected to broker with code {rc}!", "good")
@@ -89,9 +89,9 @@ class Subscriber:
     def on_subscribe(self, client, userdata, mid, reason_code_list, properties=None):
         logger.log(f"Subscribed with errorcode {reason_code_list}")
     def on_message(self, client, userdata, msg: mqtt.MQTTMessage) -> None:
-        self.msg = msg.payload.decode()
+        self.msg = (msg.payload.decode(), msg.timestamp)
 
-    def recieve(self) -> Union[str, bytes, bytearray, int, float, None]:
+    def recieve(self) -> tuple[Union[str, bytes, bytearray, int, float, None], float]:
         return self.msg
     def report_loop_times() -> float:
         pass
