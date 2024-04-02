@@ -1,16 +1,26 @@
 #!/bin/bash
 
 DIR_NAME=$(dirname "$0")
-# DEST_DIR="/home/aymen/Desktop/test1/backup1"
 DEST_DIR=$(find ~/Desktop -type d -name backup1)
 SERVICE=runscript
+SSH_COMMAND="ssh $USER@$IP"
+SCRIPTS=$(ls /etc/systemd/system | grep -a)
 
-echo "Uploading"
-
+echo "Uploading into backup"
 rsync -tuva $DIR_NAME/* $DEST_DIR
 
-sleep 1
+echo "Uploading files"
+rsync -tuva --exclude-from=$DIR_NAME/exclude.txt -e $SSH_COMMAND $DIR_NAME/* $DIR_NAME
 
-sudo systemctl daemon-reload 
+echo "Uploading services"
 
-sudo systemctl restart $SERVICE.service 
+for FILE in "$@";
+do 
+    if [  ];
+        then $SSH_COMMAND "rm -f /etc/systemd/system/$FILE.service"
+    fi
+done
+rsync -tuva -e $SSH_COMMAND $DIR_NAME/launch/* 
+
+echo "Restarting services"
+$SSH_COMMAND -t "sudo systemctl daemon-reload && sudo systemctl restart $SERVICE.service" 
